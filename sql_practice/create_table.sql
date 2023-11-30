@@ -20,7 +20,7 @@ CONTENT:
 */ 
 
 
-Spool create_table.lst
+Spool union_20231130.lst
 -- show existing tables
 SELECT table_name 
 FROM user_tables;
@@ -132,6 +132,10 @@ INSERT INTO reserves (sid, bid, day)
 VALUES (44, 103, TO_DATE('2020-12-13', 'YYYY-MM-DD'));
 INSERT INTO reserves (sid, bid, day)
 VALUES (55, 103, TO_DATE('2020-12-14', 'YYYY-MM-DD'));
+INSERT INTO reserves (sid, bid, day)
+VALUES (22, 103, TO_DATE('2020-12-16', 'YYYY-MM-DD'));
+INSERT INTO reserves (sid, bid, day)
+VALUES (44, 11, TO_DATE('2020-12-16', 'YYYY-MM-DD'));
 
 -- delete row
 DELETE FROM students s

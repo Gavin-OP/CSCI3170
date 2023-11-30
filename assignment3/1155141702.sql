@@ -5,7 +5,6 @@ Name: ZHANG Haoxiang
 
 
 /* Query 1 */
-/* Find the number of the engineers who work at the office named “Advanced Computer Vision Institute” and whose salary is greater than or equal to 10000. */
 Spool result1.lst
 SELECT COUNT(*)
 FROM engineer
@@ -57,8 +56,7 @@ Spool off
 
 /* Query 4 */
 Spool result4.lst
--- check the cheapest 3 applications
-SELECT aprice
+SELECT appid, aname
 FROM application
 WHERE appid IN (
     SELECT appid
@@ -68,37 +66,10 @@ WHERE appid IN (
         FROM engineer
         WHERE ename = 'Chan Ling Yun'
     )
-)
-ORDER BY aprice ASC;
-
--- cheapest: 19936, 20880, 24900
-
-SELECT aname, aprice
-FROM application
-WHERE appid IN (
-    SELECT appid
-    FROM maintain
-    WHERE engineerid IN (
-        SELECT engineerid
-        FROM engineer
-        WHERE ename = 'Chan Ling Yun'
-    )
-) AND aprice NOT IN (
-    SELECTXXC
-
-)
-ORDER BY aprice DESC;
-
-    SELECT temp1.aprice
-    FROM application temp1, (
-        SELECT temp4.aprice
-        FROM application temp4, (
-            SELECT temp5.aprice
-            FROM application temp5, 
-        ) AS temp3
-        WHERE temp4.aprice < temp3.aprice
-    ) temp2
-    WHERE temp1.aprice > temp2.aprice AND appid IN (
+) AND aprice IN (
+    SELECT aprice
+    FROM application
+    WHERE appid IN (
         SELECT appid
         FROM maintain
         WHERE engineerid IN (
@@ -107,7 +78,79 @@ ORDER BY aprice DESC;
             WHERE ename = 'Chan Ling Yun'
         )
     )
-
-
+    ORDER BY aprice ASC
+    FETCH FIRST 3 ROWS ONLY
+)
+ORDER BY aprice DESC;
 Spool off
 
+
+
+/* Query 5 */
+Spool result5.lst
+SELECT appid, aname
+FROM application
+WHERE appid IN (
+    SELECT appid
+    FROM maintain
+    GROUP BY appid
+    HAVING COUNT(*) >= 2
+)
+ORDER BY appid DESC;
+Spool off
+
+
+
+/* Query 6 */
+Spool result6.lst
+SELECT officeid, oname
+FROM office
+WHERE officeid IN (
+    SELECT officeid
+    FROM project
+    GROUP BY officeid
+    HAVING SUM(pbudget) < 20000
+)
+ORDER BY officeid ASC;
+Spool off
+
+
+
+
+/* Query 7 */
+Spool result7.lst
+SELECT pcategory, AVG(head_count) AS head_count
+FROM (
+    SELECT pcategory, COUNT(*) AS head_count
+    FROM project
+    WHERE projectid IN (
+        SELECT projectid
+        FROM research
+    )
+    GROUP BY pcategory
+)
+GROUP BY pcategory
+ORDER BY pcategory DESC;
+Spool off
+
+
+
+
+/* Query 8 */
+Spool result8.lst
+SELECT engineerid, ename
+FROM engineer
+WHERE engineerid IN (
+    SELECT engineerid
+    FROM research
+    WHERE projectid IN (
+        SELECT projectid
+        FROM project
+        WHERE pbudget - pexpenditure = (
+            SELECT MAX(pbudget - pexpenditure)
+            FROM project
+        )
+    )
+)   
+ORDER BY engineerid ASC;
+Spool off
