@@ -56,7 +56,7 @@ Spool off
 
 /* Query 4 */
 Spool result4.lst
-SELECT appid, aname
+SELECT aname, aprice
 FROM application
 WHERE appid IN (
     SELECT appid
@@ -119,15 +119,12 @@ Spool off
 
 /* Query 7 */
 Spool result7.lst
-SELECT pcategory, AVG(head_count) AS head_count
+SELECT pcategory, AVG(headcount) AS head_count
 FROM (
-    SELECT pcategory, COUNT(*) AS head_count
-    FROM project
-    WHERE projectid IN (
-        SELECT projectid
-        FROM research
-    )
-    GROUP BY pcategory
+    SELECT pcategory, COUNT(*) AS headcount
+    FROM project, research
+    WHERE project.projectid = research.projectid
+    GROUP BY pcategory, project.projectid
 )
 GROUP BY pcategory
 ORDER BY pcategory DESC;
