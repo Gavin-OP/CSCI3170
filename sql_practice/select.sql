@@ -1,16 +1,29 @@
 /* 
+
 DESCRIPTION:
 This part of code is the practice for lec 5, SQL  
 
 EXCUTION:
 - open sqlplus in sql_practice folder
-- run `@create_table.sql` or copy the code below to the terminal
+- run `@select.sql` or copy the code below to the terminal
 - the result will be shown in the terminal, and save in xxx.slt
 
 CONTENT:
+- select columns
+- select A
+- select at least
+- select A or B
+- select A and B
+- select A but not (A given B)
+- select A or B or C
+- select some A
+- select A better than B
+- select the most
+- select all
 
 */
-Spool any_20231123.lst
+
+Spool select.lst
 -- project / select columns
 SELECT branch_name
 FROM loan;
@@ -195,6 +208,7 @@ FROM boats b
 WHERE b.color IN ('red', 'green', 'blue');
 
 
+-- find sailors whose rating is better than some sailor named John
 SELECT * 
 FROM sailors S
 WHERE S.rating < ANY (
@@ -204,8 +218,49 @@ WHERE S.rating < ANY (
 );
     
 
+-- find sailors whose rating is better than every sailor called John
+SELECT * 
+FROM sailors S
+WHERE S.rating < ALL (
+    SELECT S2.rating
+    FROM sailors S2
+    WHERE S2.sname = 'John'
+);
 
 
+-- find sailors with the highest rating
+SELECT * 
+FROM sailors s
+WHERE s.rating >= ALL (
+    SELECT S2.rating
+    FROM sailors S2
+);
 
+
+-- !!!!!!!!!!!!!!!!!!!!!! THIS IS NOT WORKING !!!!!!!!!!!!!!!!!!!!!!
+-- find sailors who reserved all boats
+-- SELECT S.sid
+-- FROM sailors s
+-- WHERE NOT EXISTS (
+--     (SELECT DISTINCT B.bid
+--     FROM boats b)
+--     EXCEPT
+--     (SELECT DISTINCT R.bid
+--     FROM reserves r
+--     WHERE r.sid = s.sid)
+-- );
+
+-- find sailors who reserved all boats
+SELECT S.sid
+FROM sailors s
+WHERE NOT EXISTS (
+    SELECT DISTINCT B.bid
+    FROM boats b
+    WHERE NOT EXISTS (
+        SELECT R.bid
+        FROM reserves r
+        WHERE r.sid = s.sid AND r.bid = b.bid
+    )
+);
 
 Spool off

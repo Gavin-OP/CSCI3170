@@ -20,7 +20,7 @@ CONTENT:
 */ 
 
 
-Spool union_20231130.lst
+Spool create_table.lst
 -- show existing tables
 SELECT table_name 
 FROM user_tables;
@@ -70,7 +70,10 @@ CREATE TABLE sailors(
     sname  CHAR(20),
     rating INTEGER,
     age    REAL,
-    PRIMARY KEY (sid)
+    PRIMARY KEY (sid),
+    CHECK (
+        rating >= 1 AND rating <= 10
+    )
 );
 
 CREATE TABLE boats(
@@ -105,7 +108,7 @@ INSERT INTO loan (branch_name, loan_number, amount)
 VALUES ('CUHK', 777, 2);
 
 INSERT INTO sailors (sid, sname, rating, age)
-VALUES (22, 'Gavin', 7, 22);
+VALUES (23, 'Gavin', 7, 26);
 INSERT INTO sailors (sid, sname, rating, age)
 VALUES (33, 'Smith', 8, 33);
 INSERT INTO sailors (sid, sname, rating, age)
@@ -123,11 +126,11 @@ INSERT INTO boats (bid, bname, color)
 VALUES (103, 'C', 'green');
 
 INSERT INTO reserves (sid, bid, day)
-VALUES (22, 11, TO_DATE('2020-11-11', 'YYYY-MM-DD'));
+VALUES (44, 11, TO_DATE('2020-11-11', 'YYYY-MM-DD'));
 INSERT INTO reserves (sid, bid, day)
 VALUES (33, 22, TO_DATE('2020-11-12', 'YYYY-MM-DD'));
 INSERT INTO reserves (sid, bid, day)
-VALUES (44, 33, TO_DATE('2020-11-13', 'YYYY-MM-DD'));
+VALUES (44, 22, TO_DATE('2022-11-13', 'YYYY-MM-DD'));
 INSERT INTO reserves (sid, bid, day)
 VALUES (44, 103, TO_DATE('2020-12-13', 'YYYY-MM-DD'));
 INSERT INTO reserves (sid, bid, day)
