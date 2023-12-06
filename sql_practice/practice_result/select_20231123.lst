@@ -1,0 +1,733 @@
+SQL> 
+SQL> CREATE TABLE loan(
+  2      branch_name CHAR(20),
+  3      loan_number INTEGER,
+  4      amount      INTEGER,
+  5  );
+)
+*
+ERROR at line 5:
+ORA-00904: : invalid identifier 
+
+
+SQL> 
+SQL> CREATE TABLE loan(
+  2      branch_name CHAR(20),
+  3      loan_number INTEGER,
+  4      amount      INTEGER,
+  5  );
+)
+*
+ERROR at line 5:
+ORA-00904: : invalid identifier 
+
+
+SQL> CREATE TABLE loan(
+  2      branch_name CHAR(20),
+  3      loan_number INTEGER,
+  4      amount      INTEGER,
+  5  );
+)
+*
+ERROR at line 5:
+ORA-00904: : invalid identifier 
+
+
+SQL> 
+SQL> CREATE TABLE loan(
+  2      branch_name CHAR(20),
+  3      loan_number INTEGER,
+  4      amount      INTEGER
+  5  );
+
+Table created.
+
+SQL> INSERT INTO loan (branch_name, loan_number, amount)
+  2  VALUES ('CUHK', 222, 2);
+
+1 row created.
+
+SQL> INSERT INTO loan (branch_name, loan_number, amount)
+  2  VALUES ('CMTR', 333, 1);
+
+1 row created.
+
+SQL> INSERT INTO loan (branch_name, loan_number, amount)
+  2  VALUES ('CUHK', 777, 2);
+
+1 row created.
+
+SQL> SELECT branch_name
+  2  FROM loan;
+
+BRANCH_NAME                                                                     
+--------------------                                                            
+CUHK                                                                            
+CMTR                                                                            
+CUHK                                                                            
+
+SQL> SELECT DISTINCT branch_name
+  2  FROM loan;
+
+BRANCH_NAME                                                                     
+--------------------                                                            
+CUHK                                                                            
+CMTR                                                                            
+
+SQL> 
+SQL> CREATE TABLE sailors(
+  2      sid    CHAR(20),
+  3      sname  CHAR(20),
+  4      rating INTEGER,
+  5      age    REAL
+  6  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE boats(
+  2      bid    CHAR(20),
+  3      bname  CHAR(20),
+  4      color  CHAR(20)
+  5  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE reserves(
+  2      sid    CHAR(20),
+  3      bid    CHAR(20),
+  4      day    DATE
+  5  );
+
+Table created.
+
+SQL> 
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (22, 'Gavin', 7, 22);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (33, 'Smith', 8, 33);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (44, 'John', 9, 44);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (11, 'A', 'red');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (22, 'B', 'blue');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (33, 'C', 'green');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, '2020-11-11');
+VALUES (22, 11, '2020-11-11')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (33, 22, '2020-11-12');
+VALUES (33, 22, '2020-11-12')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 33, '2020-11-13');
+VALUES (44, 33, '2020-11-13')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> 
+SQL> DROP TABLE sailors
+  2  ;
+
+Table dropped.
+
+SQL> DROP TABLE boats;
+
+Table dropped.
+
+SQL> DROP TABLE reserves;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE sailors(
+  2      sid    INTEGER,
+  3      sname  CHAR(20),
+  4      rating INTEGER,
+  5      age    REAL
+  6  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE boats(
+  2      bid    INTEGER,
+  3      bname  CHAR(20),
+  4      color  CHAR(20)
+  5  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE reserves(
+  2      sid    INTEGER,
+  3      bid    INTEGER,
+  4      day    DATE
+  5  );
+
+Table created.
+
+SQL> 
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (22, 'Gavin', 7, 22);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (33, 'Smith', 8, 33);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (44, 'John', 9, 44);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (11, 'A', 'red');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (22, 'B', 'blue');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (33, 'C', 'green');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, '2020-11-11');
+VALUES (22, 11, '2020-11-11')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (33, 22, '2020-11-12');
+VALUES (33, 22, '2020-11-12')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 33, '2020-11-13');
+VALUES (44, 33, '2020-11-13')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+
+SQL> SELECT * FROM boats;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+
+SQL> SELECT * FROM reserves;
+
+no rows selected
+
+SQL> SELECT table_name
+  2  FROM user_tables;
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+STUDENTS                                                                        
+COURSES                                                                         
+EMPLOYEES                                                                       
+ENROLLED                                                                        
+LOAN                                                                            
+SAILORS                                                                         
+BOATS                                                                           
+RESERVES                                                                        
+OFFICE                                                                          
+ENGINEER                                                                        
+PROJECT                                                                         
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+APPLICATION                                                                     
+MAINTAIN                                                                        
+RESEARCH                                                                        
+
+14 rows selected.
+
+SQL> DROP TABLE reserves;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE reserves(
+  2      sid    INTEGER,
+  3      bid    INTEGER,
+  4      day    DATE
+  5  );
+
+Table created.
+
+SQL> 
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, '2020-11-11');
+VALUES (22, 11, '2020-11-11')
+                *
+ERROR at line 2:
+ORA-01861: literal does not match format string 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, TODATE('2020-11-11', 'YYYY-MM-DD'));
+VALUES (22, 11, TODATE('2020-11-11', 'YYYY-MM-DD'))
+                *
+ERROR at line 2:
+ORA-00904: "TODATE": invalid identifier 
+
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, TO_DATE('2020-11-11', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (33, 22, TO_DATE('2020-11-12', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 33, TO_DATE('2020-11-13', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE bid = 103;
+WHERE bid = 103
+      *
+ERROR at line 3:
+ORA-00904: "BID": invalid identifier 
+
+
+SQL> 
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE sid = (
+  4      SELECT sid
+  5      FROM boats
+  6      WHERE bid = 103
+  7  );
+
+no rows selected
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (103, 'C', 'green');
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 103, TO_DATE('2020-12-13', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> 
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE sid = (
+  4      SELECT sid
+  5      FROM boats
+  6      WHERE bid = 103
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+Smith                                                                           
+John                                                                            
+
+SQL> 
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE sid = (
+  4      SELECT sid
+  5      FROM reserves
+  6      WHERE bid = 103
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+John                                                                            
+
+SQL> SELECT sname
+  2  FROM sailors s reserves r
+  3  WHERE s.sid = r.sid AND r.bid = 103;
+FROM sailors s reserves r
+               *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT sname
+  2  FROM sailors s, reserves r
+  3  WHERE s.sid = r.sid AND r.bid = 103;
+
+SNAME                                                                           
+--------------------                                                            
+John                                                                            
+
+SQL> 
+SQL> SELECT sname
+  2  FROM sailors s, reserves r
+  3  WHERE S.sid = r.sid AND r.bid = 103;
+
+SNAME                                                                           
+--------------------                                                            
+John                                                                            
+
+SQL> DROP sailors, boats, reserves;
+DROP sailors, boats, reserves
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop table sailors, boats, reserves;
+drop table sailors, boats, reserves
+                  *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> drop table sailors
+  2  ;
+
+Table dropped.
+
+SQL> drop table boats;
+
+Table dropped.
+
+SQL> drop table reserves;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE sailors(
+  2      sid    INTEGER,
+  3      sname  CHAR(20),
+  4      rating INTEGER,
+  5      age    REAL,
+  6      PRIMARY KEY (sid)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE boats(
+  2      bid    INTEGER,
+  3      bname  CHAR(20),
+  4      color  CHAR(20),
+  5      PRIMARY KEY (bid)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE reserves(
+  2      sid    INTEGER,
+  3      bid    INTEGER,
+  4      day    DATE,
+  5      UNIQUE (sid, bid, day),
+  6      FOREIGN KEY (sid) REFERENCES sailors(sid),
+  7      FOREIGN KEY (bid) REFERENCES boats(bid)
+  8  );
+
+Table created.
+
+SQL> 
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (22, 'Gavin', 7, 22);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (33, 'Smith', 8, 33);
+
+1 row created.
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (44, 'John', 9, 44);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (11, 'A', 'red');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (22, 'B', 'blue');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (33, 'C', 'green');
+
+1 row created.
+
+SQL> INSERT INTO boats (bid, bname, color)
+  2  VALUES (103, 'C', 'green');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 11, TO_DATE('2020-11-11', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (33, 22, TO_DATE('2020-11-12', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 33, TO_DATE('2020-11-13', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 103, TO_DATE('2020-12-13', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE sid = (
+  4      SELECT sid
+  5      FROM reserves
+  6      WHERE bid = (
+  7          SELECT bid
+  8          FROM boats
+  9          WHERE color = 'red'
+ 10      )
+ 11  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+
+SQL> SELECT sname
+  2  FROM sailors s, boats b, reserves r
+  3  WHERE s.sid = r.sid AND r.bid = b.bid AND b.color = 'red';
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+
+SQL> SELECT color
+  2  FROM boats
+  3  WHERE bid = (
+  4      SELECT bid
+  5      FROM reserves
+  6      WHERE sid = (
+  7          SELECT sid
+  8          FROM sailors
+  9          WHERE sname = 'John'
+ 10      )
+ 11  );
+    SELECT bid
+    *
+ERROR at line 4:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> SELECT color
+  2  FROM boats
+  3  WHERE bid IN (
+  4      SELECT bid
+  5      FROM reserves
+  6      WHERE sid = (
+  7          SELECT sid
+  8          FROM sailors
+  9          WHERE sname = 'John'
+ 10      )
+ 11  );
+
+COLOR                                                                           
+--------------------                                                            
+green                                                                           
+green                                                                           
+
+SQL> SELECT sname
+  2  FROM sailors
+  3  WHERE sid IN (
+  4      SELECT sid
+  5      FROM reserves
+  6      WHERE bid IN (
+  7          SELECT bid
+  8          FROM boats
+  9          WHERE color = 'red'
+ 10      )
+ 11  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+
+SQL> SELECT DISTINCT color
+  2  FROM boats
+  3  WHERE bid IN (
+  4      SELECT bid
+  5      FROM reserves
+  6      WHERE sid IN (
+  7          SELECT sid
+  8          FROM sailors
+  9          WHERE sname = 'John'
+ 10      )
+ 11  );
+
+COLOR                                                                           
+--------------------                                                            
+green                                                                           
+
+SQL> 
+SQL> SELECT DISTINCT color
+  2  FROM sailors s, boats b, reserves r
+  3  WHERE s.sid = r.sid AND r.bid = b.bid AND s.sname = 'John';
+
+COLOR                                                                           
+--------------------                                                            
+green                                                                           
+
+SQL> SELECT DISTINCT sname
+  2  FROM sailors s, reserves r
+  3  WHERE s.sid = r.sid;
+
+SNAME                                                                           
+--------------------                                                            
+Smith                                                                           
+Gavin                                                                           
+John                                                                            
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (55, 103, TO_DATE('2020-12-14', 'YYYY-MM-DD'));
+INSERT INTO reserves (sid, bid, day)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (H144.SYS_C0075179) violated - parent key not 
+found 
+
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (55, 'Bob', 10, 55);
+
+1 row created.
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (55, 103, TO_DATE('2020-12-14', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT DISTINCT sname
+  2  FROM sailors
+  3  WHERE sid IN (
+  4      SELECT sid
+  5      FROM reserves
+  6  );
+
+SNAME                                                                           
+--------------------                                                            
+Smith                                                                           
+Bob                                                                             
+Gavin                                                                           
+John                                                                            
+
+SQL> SELECT DISTINCT sname
+  2  FROM sailors s, reserves r
+  3  WHERE s.sid = r.sid;
+
+SNAME                                                                           
+--------------------                                                            
+Smith                                                                           
+Bob                                                                             
+Gavin                                                                           
+John                                                                            
+
+SQL> SELECT S.age, age1 = S.age + 1, age1 * 2 AS age2
+  2  FROM sailors s
+  3  WHERE s.sname LIKE 'B_%B';
+SELECT S.age, age1 = S.age + 1, age1 * 2 AS age2
+                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT S.age, S.age + 1 AS age1, age1 * 2 AS age2
+  2  FROM sailors s
+  3  WHERE s.sname LIKE 'B_%B';
+SELECT S.age, S.age + 1 AS age1, age1 * 2 AS age2
+                                 *
+ERROR at line 1:
+ORA-00904: "AGE1": invalid identifier 
+
+
+SQL> Spool off

@@ -1,0 +1,300 @@
+SQL> SELECT *
+  2  FROM sailors S
+  3  WHERE S.rating < ALL (
+  4      SELECT S2.rating
+  5      FROM sailors S2
+  6      WHERE S2.sname = 'John'
+  7  );
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        33 Smith                         8         33                           
+        22 Gavin                         7         22                           
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> -- find sailors with the highest rating
+SQL> SELECT *
+  2  FROM sailors s
+  3  WHERE s.rating >= ALL (
+  4      SELECT S2.rating
+  5      FROM sailors S2
+  6  );
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        55 Bob                          10         55                           
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserve R, boats b
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color IN ('red', 'green');
+FROM sailors S, reserve R, boats b
+                *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> lSELECT DISTINCT s.sid
+SP2-0734: unknown command beginning "lSELECT DI..." - rest of line ignored.
+SQL> FROM sailors S, boats B, reserves r
+SP2-0734: unknown command beginning "FROM sailo..." - rest of line ignored.
+SQL> WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red' AND S.sid IN (
+SP2-0734: unknown command beginning "WHERE S.si..." - rest of line ignored.
+SQL>     SELECT DISTINCT S.sid
+  2      FROM sailors S, boats B, reserves r
+  3      WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green'
+  4  );
+)
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT DISTINCT s.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red' AND S.sid IN (
+  4      SELECT DISTINCT S.sid
+  5      FROM sailors S, boats B, reserves r
+  6      WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green'
+  7  );
+
+no rows selected
+
+SQL> SELECT *
+  2  FROM sailors S, reserve r
+  3  WHERE s.sid = r.sid AND r.bid IN (
+  4      SELECT b.bid
+  5      FROM boats b
+  6  );
+FROM sailors S, reserve r
+                *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT *
+  2  FROM sailors S, reserve r
+  3  WHERE s.sid = r.sid AND r.bid IN (
+  4      SELECT b.bid
+  5      FROM boats b
+  6  );
+FROM sailors S, reserve r
+                *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM reserve
+  2  ;
+SELECT * FROM reserve
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT *
+  2  FROM sailors S, reserves r
+  3  WHERE s.sid = r.sid AND r.bid IN (
+  4      SELECT b.bid
+  5      FROM boats b
+  6  );
+
+       SID SNAME                    RATING        AGE        SID        BID     
+---------- -------------------- ---------- ---------- ---------- ----------     
+DAY                                                                             
+---------                                                                       
+        22 Gavin                         7         22         22         11     
+11-NOV-20                                                                       
+                                                                                
+        33 Smith                         8         33         33         22     
+12-NOV-20                                                                       
+                                                                                
+        44 John                          9         44         44         33     
+13-NOV-20                                                                       
+                                                                                
+
+       SID SNAME                    RATING        AGE        SID        BID     
+---------- -------------------- ---------- ---------- ---------- ----------     
+DAY                                                                             
+---------                                                                       
+        44 John                          9         44         44        103     
+13-DEC-20                                                                       
+                                                                                
+        55 Bob                          10         55         55        103     
+14-DEC-20                                                                       
+                                                                                
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXSIT (
+  4      SELECT DISTINCT B.bid
+  5      FROM boats b
+  6      EXCEPT
+  7      SELECT DISTINCT R.bid
+  8      FROM reserves r
+  9      WHERE r.sid = s.sid
+ 10  );
+    SELECT DISTINCT B.bid
+    *
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXSIT (
+  4      (SELECT DISTINCT B.bid
+  5      FROM boats b)
+  6      EXCEPT
+  7      (SELECT DISTINCT R.bid
+  8      FROM reserves r
+  9      WHERE r.sid = s.sid)
+ 10  );
+    EXCEPT
+    *
+ERROR at line 6:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXSITS (
+  4      (SELECT DISTINCT B.bid
+  5      FROM boats b)
+  6      EXCEPT
+  7      (SELECT DISTINCT R.bid
+  8      FROM reserves r
+  9      WHERE r.sid = s.sid)
+ 10  );
+    EXCEPT
+    *
+ERROR at line 6:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXISTS (
+  4      (SELECT DISTINCT B.bid
+  5      FROM boats b)
+  6      EXCEPT
+  7      (SELECT DISTINCT R.bid
+  8      FROM reserves r
+  9      WHERE r.sid = s.sid)
+ 10  );
+    EXCEPT
+    *
+ERROR at line 6:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXISTS (
+  4      (SELECT DISTINCT B.bid
+  5      FROM boats b)
+  6      EXCEPT
+  7      (SELECT DISTINCT R.bid
+  8      FROM reserves r
+  9      WHERE r.sid = s.sid)
+ 10  );
+    EXCEPT
+    *
+ERROR at line 6:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXISTS (
+  4      SELECT DISTINCT B.bid
+  5      FROM boats b
+  6      WHERE NOT EXISTS (
+  7          SELECT R.bid
+  8          FROM reserves r
+  9          WHERE r.sid = s.sid AND r.bid = b.bid
+ 10      )
+ 11  );
+
+no rows selected
+
+SQL> SELECT * FROM sailors
+  2  ;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT * FROM reserves;
+
+       SID        BID DAY                                                       
+---------- ---------- ---------                                                 
+        22         11 11-NOV-20                                                 
+        33         22 12-NOV-20                                                 
+        44         33 13-NOV-20                                                 
+        44        103 13-DEC-20                                                 
+        55        103 14-DEC-20                                                 
+
+SQL> SELECT * FROM boats;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+       103 C                    green                                           
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 22, TO_DATE('2022-11-13', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 11, TO_DATE('2020-11-11', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXISTS (
+  4      SELECT DISTINCT B.bid
+  5      FROM boats b
+  6      WHERE NOT EXISTS (
+  7          SELECT R.bid
+  8          FROM reserves r
+  9          WHERE r.sid = s.sid AND r.bid = b.bid
+ 10      )
+ 11  );
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE NOT EXISTS (
+  4      SELECT DISTINCT B.bid
+  5      FROM boats b
+  6      WHERE NOT EXISTS (
+  7          SELECT R.bid
+  8          FROM reserves r
+  9          WHERE r.sid = s.sid AND r.bid = b.bid
+ 10      )
+ 11  );
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+
+SQL> Spool off

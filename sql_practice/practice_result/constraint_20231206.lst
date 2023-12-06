@@ -1,0 +1,82 @@
+SQL> CREATE TABLE SailorsTest (
+  2      sid     INTEGER,
+  3      sname   CHAR(20),
+  4      rating  INTEGER,
+  5      age     REAL,
+  6      PRIMARY KEY (sid),
+  7      CHECK (
+  8          rating >= 1 AND rating <= 10
+  9      )
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE ReservesTest (
+  2      sid     INTEGER,
+  3      bid     INTEGER,
+  4      day     DATE,
+  5      PRIMARY KEY (sid, bid, day),
+  6      FOREIGN KEY (sid) REFERENCES SailorsTest(sid),
+  7      FOREIGN KEY (bid) REFERENCES Boats(bid),
+  8      CONSTRAINT noInterLakeRes
+  9      CHECK (
+ 10          'Interlake' <> (
+ 11              SELECT B.bname
+ 12              FROM boats b
+ 13              WHERE b.bid = bid
+ 14          )
+ 15      )
+ 16  );
+            SELECT B.bname
+            *
+ERROR at line 11:
+ORA-02251: subquery not allowed here 
+
+
+SQL> 
+SQL> CREATE TABLE ReservesTest (
+  2      sid     INTEGER,
+  3      bid     INTEGER,
+  4      day     DATE,
+  5      PRIMARY KEY (sid, bid, day),
+  6      FOREIGN KEY (sid) REFERENCES SailorsTest(sid),
+  7      FOREIGN KEY (bid) REFERENCES Boats(bid),
+  8      CONSTRAINT noInterLakeRes
+  9      CHECK (
+ 10          'Interlake' <> (
+ 11              SELECT B.bname
+ 12              FROM boats b
+ 13              WHERE b.bid = bid
+ 14          )
+ 15      )
+ 16  );
+            SELECT B.bname
+            *
+ERROR at line 11:
+ORA-02251: subquery not allowed here 
+
+
+SQL> CREATE TABLE ReservesTest (
+  2      sid     INTEGER,
+  3      bid     INTEGER,
+  4      day     DATE,
+  5      PRIMARY KEY (sid, bid, day),
+  6      FOREIGN KEY (sid) REFERENCES SailorsTest(sid),
+  7      FOREIGN KEY (bid) REFERENCES Boats(bid),
+  8      CONSTRAINT noInterLakeRes
+  9      CHECK (
+ 10          bid NOT IN (
+ 11              SELECT B.bid
+ 12              FROM boats B
+ 13              WHERE B.bname = 'Interlake'
+ 14          )
+ 15      )
+ 16  );
+            SELECT B.bid
+            *
+ERROR at line 11:
+ORA-02251: subquery not allowed here 
+
+
+SQL> Spool off

@@ -1,0 +1,377 @@
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailors s
+  3  GROUP BY S.rating;
+
+    RATING MIN(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> 
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailor s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) >= 1;
+FROM sailor s
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailors s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) >= 1;
+
+    RATING MIN(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailors s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) >= 1;
+
+    RATING MIN(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> ORDER BY S.rating ASC;
+SP2-0734: unknown command beginning "ORDER BY S..." - rest of line ignored.
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailors s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) >= 1;
+
+    RATING MIN(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> ORDER BY S.rating ASC;
+SP2-0734: unknown command beginning "ORDER BY S..." - rest of line ignored.
+SQL> SELECT S.rating, MIN(S.age)
+  2  FROM sailors s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) >= 1
+  6  ORDER BY S.rating ASC;
+
+    RATING MIN(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+         9         44                                                           
+        10         55                                                           
+
+SQL> SELECT b.bid, COUNT(r.sid)
+  2  FROM reserves R, boats b
+  3  WHERE R.bid = b.bid
+  4  GROUP BY b.color
+  5  HAVING b.color = 'red';
+SELECT b.bid, COUNT(r.sid)
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> SELECT b.bid, COUNT(*)
+  2  FROM reserves R, boats b
+  3  WHERE R.bid = b.bid
+  4  GROUP BY b.color
+  5  HAVING b.color = 'red';
+SELECT b.bid, COUNT(*)
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> SELECT b.bid, COUNT(*)
+  2  FROM reserves R, boats b
+  3  WHERE R.bid = b.bid
+  4  GROUP BY b.color, B.bid
+  5  HAVING b.color = 'red';
+
+       BID   COUNT(*)                                                           
+---------- ----------                                                           
+        11          1                                                           
+
+SQL> SELECT * FROM boats;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+       103 C                    green                                           
+
+SQL> SELECT B.bid, COUNT(*) AS reservation_count
+  2  FROM reserves R, boats B
+  3  WHERE R.bid = B.bid AND B.color = 'red'
+  4  GROUP BY B.bid;
+
+       BID RESERVATION_COUNT                                                    
+---------- -----------------                                                    
+        11                 1                                                    
+
+SQL> SELECT S.rating, AVG(S.age)
+  2  FROM sailors s
+  3  GROUP BY S.rating
+  4  HAVING COUNT(*) >= 2;
+
+no rows selected
+
+SQL> SELECT S.rating, AVG(S.age)
+  2  FROM sailors s
+  3  GROUP BY S.rating
+  4  HAVING COUNT(*) >= 1;
+
+    RATING AVG(S.AGE)                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL>  SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  GROUP BY S.rating
+  4  HAVING 1 <= (
+  5      SELECT COUNT(*)
+  6      FROM sailors S2
+  7      WHERE S2.rating = S.rating
+  8  );
+
+    RATING    AVG_AGE                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 18
+  4  GROUP BY S.rating
+  5  HAVING 1 <= (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating
+  9  );
+
+    RATING    AVG_AGE                                                           
+---------- ----------                                                           
+         7         22                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING 1 <= (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating
+  9  );
+
+    RATING    AVG_AGE                                                           
+---------- ----------                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> INSERT INTO sailors (sid, sname, rating, age)
+  2  VALUES (23, 'Gavin', 7, 26);
+
+1 row created.
+
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING 1 <= (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating
+  9  
+SQL> );
+SP2-0042: unknown command ")" - rest of line ignored.
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING 1 <= (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating
+  9  );
+
+    RATING    AVG_AGE                                                           
+---------- ----------                                                           
+         7         26                                                           
+         8         33                                                           
+        10         55                                                           
+         9         44                                                           
+
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING 1 < (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating
+  9  );
+
+    RATING    AVG_AGE                                                           
+---------- ----------                                                           
+         7         26                                                           
+
+SQL> 
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING 1 < (
+  6      SELECT COUNT(*)
+  7      FROM sailors S2
+  8      WHERE S2.rating = S.rating AND S2.age >= 25
+  9  );
+
+no rows selected
+
+SQL> SELECT S.rating, AVG(S.age) AS avg_age
+  2  FROM sailors s
+  3  WHERE S.age >= 25
+  4  GROUP BY S.rating
+  5  HAVING COUNT(*) > 1;
+
+no rows selected
+
+SQL> SELECT temp.rating, temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) AS temp
+  7  WHERE temp.avgage = (
+  8      SELECT MIN(temp.avgage)
+  9      FROM temp
+ 10  );
+) AS temp
+  *
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT temp.rating, temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) AS temp
+  7  WHERE temp.avgage = (
+  8      SELECT MIN(temp.avgage)
+  9      FROM temp
+ 10  );
+) AS temp
+  *
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT temp.rating, temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) temp
+  7  WHERE temp.avgage = (
+  8      SELECT MIN(temp.avgage)
+  9      FROM temp
+ 10  );
+    FROM temp
+         *
+ERROR at line 9:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT temp.rating, temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) AS temp
+  7  WHERE temp.avgage = (
+  8      SELECT MIN(temp.avgage)
+  9      FROM temp
+ 10  );
+) AS temp
+  *
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT temp.rating, temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) AS temp
+  7  WHERE temp.avgage = (
+  8      SELECT MIN(temp.avgage)
+  9      FROM (
+ 10          SELECT S.rating, AVG(S.age) AS avgage
+ 11          FROM sailors s
+ 12          GROUP BY S.rating
+ 13      ) AS temp
+ 14  );
+) AS temp
+  *
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT Temp.rating, Temp.avgage
+  2  FROM (
+  3      SELECT S.rating, AVG(S.age) AS avgage
+  4      FROM sailors s
+  5      GROUP BY S.rating
+  6  ) AS Temp
+  7  WHERE Temp.avgage = (
+  8      SELECT MIN(Temp.avgage)
+  9      FROM Temp
+ 10  );
+) AS Temp
+  *
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> 
+SQL> Spool off

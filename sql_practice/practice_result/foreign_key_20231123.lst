@@ -1,0 +1,112 @@
+SQL> SELECT table_name FROM user_tables;
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+STUDENTS                                                                        
+COURSES                                                                         
+OFFICE                                                                          
+ENGINEER                                                                        
+PROJECT                                                                         
+APPLICATION                                                                     
+MAINTAIN                                                                        
+RESEARCH                                                                        
+
+8 rows selected.
+
+SQL> 
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY (sid) REFERENCES students(sid) ON UPDATE CASCADE,
+  7      FOREIGN KEY (cid) REFERENCES courses(cid) ON UPDATE CASCADE
+  8  );
+    FOREIGN KEY (sid) REFERENCES students(sid) ON UPDATE CASCADE,
+                                                  *
+ERROR at line 6:
+ORA-00905: missing keyword 
+
+
+SQL> 
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY (sid) REFERENCES students(sid) ON UPDATE NO ACTION,
+  7      FOREIGN KEY (cid) REFERENCES courses(cid) ON UPDATE NO ACTION
+  8  );
+    FOREIGN KEY (sid) REFERENCES students(sid) ON UPDATE NO ACTION,
+                                                  *
+ERROR at line 6:
+ORA-00905: missing keyword 
+
+
+SQL> 
+SQL> 
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY enrolled(sid) REFERENCES students(sid) ON UPDATE NO ACTION,
+  7      FOREIGN KEY enrolled(cid) REFERENCES courses(cid) ON UPDATE NO ACTION
+  8  );
+    FOREIGN KEY enrolled(sid) REFERENCES students(sid) ON UPDATE NO ACTION,
+                *
+ERROR at line 6:
+ORA-00906: missing left parenthesis 
+
+
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY (sid) REFERENCES students ON UPDATE NO ACTION,
+  7      FOREIGN KEY (cid) REFERENCES courses ON UPDATE NO ACTION
+  8  );
+    FOREIGN KEY (sid) REFERENCES students ON UPDATE NO ACTION,
+                                             *
+ERROR at line 6:
+ORA-00905: missing keyword 
+
+
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY (sid) REFERENCES students,
+  7      FOREIGN KEY (cid) REFERENCES courses
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE employees(
+  2      id      CHAR(20),
+  3      name    CHAR(30),
+  4      lot     INTEGER,
+  5      PRIMARY KEY (id)
+  6  );
+
+Table created.
+
+SQL> DROP TABLE enrolled;
+
+Table dropped.
+
+SQL> CREATE TABLE enrolled(
+  2      sid     CHAR(20),
+  3      cid     CHAR(20),
+  4      grade   CHAR(10),
+  5      PRIMARY KEY (sid, cid),
+  6      FOREIGN KEY (sid) REFERENCES students(sid),
+  7      FOREIGN KEY (cid) REFERENCES courses(cid)
+  8  );
+
+Table created.
+
+SQL> 
+SQL> Spool off

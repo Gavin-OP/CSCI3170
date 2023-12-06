@@ -1,0 +1,69 @@
+SQL> DROP TABLE students
+  2  ;
+
+Table dropped.
+
+SQL> SELECT table_name
+  2  FROM user_tables;
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+OFFICE                                                                          
+ENGINEER                                                                        
+PROJECT                                                                         
+APPLICATION                                                                     
+MAINTAIN                                                                        
+RESEARCH                                                                        
+
+6 rows selected.
+
+SQL> -- practice
+SQL> CREATE TABLE students(
+  2      sid     CHAR(20),
+  3      name    CHAR(30),
+  4      login   CHAR(20),
+  5      age     INTEGER,
+  6      gpa     REAL
+  7  );
+
+Table created.
+
+SQL> INSERT INTO students (sid, name, login, age, gpa)
+  2  VALUES (5688, 'Smith', 'smith@ee', 18, 3.2);
+
+1 row created.
+
+SQL> INSERT INTO students (sid, name, login, age, gpa)
+  2  VALUES (5688, 'Gavin', 'smith@ee', 18, 3.2);
+
+1 row created.
+
+SQL> DESCRIBE students
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SID                                                CHAR(20)
+ NAME                                               CHAR(30)
+ LOGIN                                              CHAR(20)
+ AGE                                                NUMBER(38)
+ GPA                                                FLOAT(63)
+
+SQL> -- show table
+SQL> SELECT * FROM students;
+
+SID                  NAME                           LOGIN                       
+-------------------- ------------------------------ --------------------        
+       AGE        GPA                                                           
+---------- ----------                                                           
+5688                 Smith                          smith@ee                    
+        18        3.2                                                           
+                                                                                
+5688                 Gavin                          smith@ee                    
+        18        3.2                                                           
+                                                                                
+
+SQL> DELETE FROM students s
+  2  WHERE s.name = 'Smith';
+
+1 row deleted.
+
+SQL> Spool off

@@ -1,0 +1,622 @@
+SQL> SELECT table_name FROM user_tables;
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+STUDENTS                                                                        
+COURSES                                                                         
+EMPLOYEES                                                                       
+ENROLLED                                                                        
+LOAN                                                                            
+SAILORS                                                                         
+BOATS                                                                           
+RESERVES                                                                        
+OFFICE                                                                          
+ENGINEER                                                                        
+PROJECT                                                                         
+
+TABLE_NAME                                                                      
+--------------------------------------------------------------------------------
+APPLICATION                                                                     
+MAINTAIN                                                                        
+RESEARCH                                                                        
+
+14 rows selected.
+
+SQL> SELECT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND (B.color = 'red' OR B.color = 'green');
+
+       SID                                                                      
+----------                                                                      
+        22                                                                      
+        44                                                                      
+        44                                                                      
+        55                                                                      
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT * FROM reserves;
+
+       SID        BID DAY                                                       
+---------- ---------- ---------                                                 
+        22         11 11-NOV-20                                                 
+        33         22 12-NOV-20                                                 
+        44         33 13-NOV-20                                                 
+        44        103 13-DEC-20                                                 
+        55        103 14-DEC-20                                                 
+
+SQL> SELECT * FROM boats
+  2  ;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+       103 C                    green                                           
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND (B.color = 'red' OR B.color = 'green');
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+        55                                                                      
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  UNION
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+
+       SID                                                                      
+----------                                                                      
+        22                                                                      
+        44                                                                      
+        55                                                                      
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 103, TO_DATE('2020-12-15', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  EXCEPT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+EXCEPT
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> 
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  EXCEPT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+EXCEPT
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  -
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+SELECT DISTINCT S.sid
+*
+ERROR at line 5:
+ORA-00936: missing expression 
+
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  EXCEPT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+EXCEPT
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  AND EXCEPT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, reserves R, boats B
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+SELECT DISTINCT S.sid
+*
+ERROR at line 5:
+ORA-00920: invalid relational operator 
+
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  AND (EXCEPT SELECT DISTINCT S.sid
+  5  FROM sailors S, reserves R, boats B
+  6  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green');
+AND (EXCEPT SELECT DISTINCT S.sid
+            *
+ERROR at line 4:
+ORA-00920: invalid relational operator 
+
+
+SQL> 
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves R, boats B
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  EXCEPT (SELECT DISTINCT S.sid
+  5  FROM sailors S, reserves R, boats B
+  6  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green');
+EXCEPT (SELECT DISTINCT S.sid
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserve r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color IN ('red', 'green');
+FROM sailors S, boats B, reserve r
+                         *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color IN ('red', 'green');
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+        55                                                                      
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red' AND B.color = 'green';
+
+no rows selected
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (44, 11, TO_DATE('2020-12-16', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> -- find sid's of sailors who've reserved a red and a green boat
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red' AND B.color = 'green';
+
+no rows selected
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT * FROM boats;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+       103 C                    green                                           
+
+SQL> SELECT * FROM reserves;
+
+       SID        BID DAY                                                       
+---------- ---------- ---------                                                 
+        22        103 15-DEC-20                                                 
+        44         11 16-DEC-20                                                 
+        22         11 11-NOV-20                                                 
+        33         22 12-NOV-20                                                 
+        44         33 13-NOV-20                                                 
+        44        103 13-DEC-20                                                 
+        55        103 14-DEC-20                                                 
+
+7 rows selected.
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND (B.color = 'red' AND B.color = 'green');
+
+no rows selected
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B1, boats B2, reserves R
+  3  WHERE S.sid = R.sid AND (R.bid = B1.bid AND R.bid = B2.bid) AND (B1.color = 'red' AND B2.color = 'green');
+
+no rows selected
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B1, boats B2, reserves R1, reserves R2
+  3  WHERE (S.sid = R1.sid AND S.sid = R2.sid) AND (R1.bid = B1.bid AND R2.bid = B2.bid) AND (B1.color = 'red' AND B2.color = 'green');
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+
+SQL> 
+SQL> SELECT DISTINCT s.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red' AND S.sid IN (
+  4      SELECT DISTINCT S.sid
+  5      FROM sailors S, boats B, reserves r
+  6      WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green'
+  7  );
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  INTERSECT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, boats B, reserves r
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+
+       SID                                                                      
+----------                                                                      
+        22                                                                      
+        44                                                                      
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, boats B, reserves r
+  3  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+  4  EXCEPT
+  5  SELECT DISTINCT S.sid
+  6  FROM sailors S, boats B, reserves r
+  7  WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'green';
+EXCEPT
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT DISTINCT R.sid
+  2  FROM reserves R, boats b
+  3  WHERE B.bid = R.bid AND B.color = 'red' AND R.sid NOT IN (
+  4      SELECT DISTINCT R.sid
+  5      FROM reserves R, boats b
+  6      WHERE B.bid = R.bid AND B.color = 'green'
+  7  );
+
+no rows selected
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves r
+  3  WHERE S.sid = R.sid AND S.rating > 10 AND R.bid = 103;
+
+no rows selected
+
+SQL> SELECT * FROM sailors
+  2  ;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> 
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves r
+  3  WHERE S.sid = R.sid AND S.rating > 5 AND R.bid = 103;
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+        55                                                                      
+
+SQL> SELECT * FROM reserves;
+
+       SID        BID DAY                                                       
+---------- ---------- ---------                                                 
+        22        103 15-DEC-20                                                 
+        44         11 16-DEC-20                                                 
+        22         11 11-NOV-20                                                 
+        33         22 12-NOV-20                                                 
+        44         33 13-NOV-20                                                 
+        44        103 13-DEC-20                                                 
+        55        103 14-DEC-20                                                 
+
+7 rows selected.
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves r
+  3  WHERE S.sid = R.sid AND S.rating > 5 OR R.bid = 103;
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+        33                                                                      
+        55                                                                      
+
+SQL> SELECT DISTINCT S.sid
+  2  FROM sailors S, reserves r
+  3  WHERE S.sid = R.sid AND S.rating > 8 OR R.bid = 103;
+
+       SID                                                                      
+----------                                                                      
+        44                                                                      
+        22                                                                      
+        33                                                                      
+        55                                                                      
+
+SQL> SELECT S.sid
+  2  FROM sailors s
+  3  WHERE s.rating > 8
+  4  UNION
+  5  SELECT R.sid
+  6  FROM reserves r
+  7  WHERE R.bid = 103;
+
+       SID                                                                      
+----------                                                                      
+        22                                                                      
+        44                                                                      
+        55                                                                      
+
+SQL> 
+SQL> SELECT B.bname
+  2  FROM boats b
+  3  WHERE b.color IN ('red', 'green', 'blue');
+
+BNAME                                                                           
+--------------------                                                            
+A                                                                               
+B                                                                               
+C                                                                               
+C                                                                               
+
+SQL> SELECT * FROM boats;
+
+       BID BNAME                COLOR                                           
+---------- -------------------- --------------------                            
+        11 A                    red                                             
+        22 B                    blue                                            
+        33 C                    green                                           
+       103 C                    green                                           
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE s.sid = (
+  4      SELECT r.sid
+  5      FROM reserves r
+  6      WHERE r.bid = 103
+  7  );
+    SELECT r.sid
+    *
+ERROR at line 4:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE s.sid IN (
+  4      SELECT r.sid
+  5      FROM reserves r
+  6      WHERE r.bid = 103
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+John                                                                            
+Bob                                                                             
+
+SQL> 
+SQL> SELECT s.sname
+  2  FROM sailors S
+  3  WHERE s.sid NOT IN (
+  4      SELECT r.sid
+  5      FROM reserves r
+  6      WHERE r.bid <> 103
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Bob                                                                             
+
+SQL> 
+SQL> SELECT s.sname
+  2  FROM sailors S
+  3  WHERE s.sid NOT IN (
+  4      SELECT DISTINCT r.sid
+  5      FROM reserves r
+  6      WHERE r.bid <> 103
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Bob                                                                             
+
+SQL> SELECT r.sid FROM reserves r WHERE r.bid <> 103;
+
+       SID                                                                      
+----------                                                                      
+        22                                                                      
+        33                                                                      
+        44                                                                      
+        44                                                                      
+
+SQL> SELEC * FROM reserves;
+SP2-0734: unknown command beginning "SELEC * FR..." - rest of line ignored.
+SQL> SELECT * FROM reserves;
+
+       SID        BID DAY                                                       
+---------- ---------- ---------                                                 
+        22        103 15-DEC-20                                                 
+        44         11 16-DEC-20                                                 
+        22         11 11-NOV-20                                                 
+        33         22 12-NOV-20                                                 
+        44         33 13-NOV-20                                                 
+        44        103 13-DEC-20                                                 
+        55        103 14-DEC-20                                                 
+
+7 rows selected.
+
+SQL> 
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS (
+  4      SELECT *
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+John                                                                            
+Bob                                                                             
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE UNIQUE (
+  4      SELECT *
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+WHERE UNIQUE (
+      *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE UNIQUE EXISTS(
+  4      SELECT *
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+WHERE UNIQUE EXISTS(
+      *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS(
+  4      SELECT UNIQUE R.sid
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+John                                                                            
+Bob                                                                             
+
+SQL> INSERT INTO reserves (sid, bid, day)
+  2  VALUES (22, 103, TO_DATE('2020-12-16', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS(
+  4      SELECT UNIQUE R.sid
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+
+SNAME                                                                           
+--------------------                                                            
+Gavin                                                                           
+John                                                                            
+Bob                                                                             
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS UNIQUE(
+  4      SELECT R.sid
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+WHERE EXISTS UNIQUE(
+             *
+ERROR at line 3:
+ORA-00906: missing left parenthesis 
+
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS ( UNIQUE (
+  4      SELECT R.sid
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  ));
+WHERE EXISTS ( UNIQUE (
+               *
+ERROR at line 3:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> SELECT s.sname
+  2  FROM sailors s
+  3  WHERE EXISTS ( UNIQUE
+  4      SELECT R.sid
+  5      FROM reserves R
+  6      WHERE R.bid = 103 AND R.sid = s.sid
+  7  );
+WHERE EXISTS ( UNIQUE
+               *
+ERROR at line 3:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> 

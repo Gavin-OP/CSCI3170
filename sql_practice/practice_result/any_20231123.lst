@@ -1,0 +1,145 @@
+SQL> SELECT *
+  2  FROM sailors S
+  3  WHERE S.rating < ANY (
+  4      SELECT S2.rating
+  5      FROM sailors S2
+  6      WHERE S2.sname = 'John'
+  7  );
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+
+SQL> SELECT * FROM sailors;
+
+       SID SNAME                    RATING        AGE                           
+---------- -------------------- ---------- ----------                           
+        22 Gavin                         7         22                           
+        33 Smith                         8         33                           
+        44 John                          9         44                           
+        55 Bob                          10         55                           
+
+SQL> SELECT aname, aprice
+  2  FROM application
+  3  WHERE appid IN (
+  4      SELECT appid
+  5      FROM maintain
+  6      WHERE engineerid IN (
+  7          SELECT engineerid
+  8          FROM engineer
+  9          WHERE ename = 'Chan Ling Yun'
+ 10      )
+ 11  ) AND aprice IN (
+ 12      SELECT aprice
+ 13      FROM application
+ 14      WHERE appid IN (
+ 15          SELECT appid
+ 16          FROM maintain
+ 17          WHERE engineerid IN (
+ 18              SELECT engineerid
+ 19              FROM engineer
+ 20              WHERE ename = 'Chan Ling Yun'
+ 21          )
+ 22      )
+ 23      ORDER BY aprice ASC
+ 24      FETCH FIRST 3 ROWS ONLY
+ 25  );
+
+ANAME                                                                           
+--------------------------------------------------------------------------------
+    APRICE                                                                      
+----------                                                                      
+Briar                                                                           
+     19936                                                                      
+                                                                                
+Tiger                                                                           
+     20880                                                                      
+                                                                                
+Lion                                                                            
+     24900                                                                      
+                                                                                
+
+SQL> SELECT aname, aprice
+  2  FROM application
+  3  WHERE appid IN (
+  4      SELECT appid
+  5      FROM maintain
+  6      WHERE engineerid IN (
+  7          SELECT engineerid
+  8          FROM engineer
+  9          WHERE ename = 'Chan Ling Yun'
+ 10      )
+ 11  ) AND aprice IN (
+ 12      SELECT aprice
+ 13      FROM application
+ 14      WHERE appid IN (
+ 15          SELECT appid
+ 16          FROM maintain
+ 17          WHERE engineerid IN (
+ 18              SELECT engineerid
+ 19              FROM engineer
+ 20              WHERE ename = 'Chan Ling Yun'
+ 21          )
+ 22      )
+ 23      ORDER BY aprice ASC
+ 24      FETCH FIRST 3 ROWS ONLY
+ 25  )
+ 26  ORDER BY aprice DESC;
+
+ANAME                                                                           
+--------------------------------------------------------------------------------
+    APRICE                                                                      
+----------                                                                      
+Lion                                                                            
+     24900                                                                      
+                                                                                
+Tiger                                                                           
+     20880                                                                      
+                                                                                
+Briar                                                                           
+     19936                                                                      
+                                                                                
+
+SQL> SELECT appid, aname
+  2  FROM application
+  3  WHERE appid IN (
+  4      SELECT appid
+  5      FROM maintain
+  6      WHERE engineerid IN (
+  7          SELECT engineerid
+  8          FROM engineer
+  9          WHERE ename = 'Chan Ling Yun'
+ 10      )
+ 11  ) AND aprice IN (
+ 12      SELECT aprice
+ 13      FROM application
+ 14      WHERE appid IN (
+ 15          SELECT appid
+ 16          FROM maintain
+ 17          WHERE engineerid IN (
+ 18              SELECT engineerid
+ 19              FROM engineer
+ 20              WHERE ename = 'Chan Ling Yun'
+ 21          )
+ 22      )
+ 23      ORDER BY aprice ASC
+ 24      FETCH FIRST 3 ROWS ONLY
+ 25  )
+ 26  ORDER BY aprice DESC;
+
+     APPID                                                                      
+----------                                                                      
+ANAME                                                                           
+--------------------------------------------------------------------------------
+        63                                                                      
+Lion                                                                            
+                                                                                
+        62                                                                      
+Tiger                                                                           
+                                                                                
+        59                                                                      
+Briar                                                                           
+                                                                                
+
+SQL> Spool result4.lst
