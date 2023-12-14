@@ -16,28 +16,29 @@ Codes and results set for assignment3, Lecture3, and Lecture5.
 1. Get access to CUHK CSE Server or other servers that support sqlplus.
 2. Clone the repository to your server by using the following command:
    ```shell
-   git clone 
+   git clone https://github.com/Gavin-OP/CSCI3170-Assignment-and-Practice.git
    ```  
 
 ## Usage
 
-1. Go to the folder you want to execute the results, assignment3 or practice.
+1. Go to the folder you want to execute the results, assignment3 or sql_practice.
    ```shell
    cd [folder_name]
    ```
 2. Log in sqlplus.
-3. For assignment 3, run the following command:
+3. For assignment3, run the following command:
    ```sql
+   @create_table.sql
    @add.sql
-   @1155141702.sql
+   @results.sql
    ```
-4. For practice, run the following command:
+4. For sql_practice, run the following command:
    ```sql
-   @
+   @[file_name]
    ```
 
 ## Contributing
-PRs and [issues]() gladly accepted!
+PRs and [issues](https://github.com/Gavin-OP/CSCI3170-Assignment-and-Practice/issues) gladly accepted!
 
 ## License  
 
